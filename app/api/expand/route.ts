@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     const completion = await openai.chat.completions.create({
       // OpenRouter model slug:
-      model: 'google/gemini-2.5-flash',
+      model: 'x-ai/grok-4-fast',
       response_format: { type: 'json_object' }, // JSON mode
       temperature: 0.2,
       max_tokens: 1000,
