@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+---
 
-## Getting Started
+```markdown
+# 🌳 Knowledge Tree
 
-First, run the development server:
+**The internet has every answer — but no map.**
+
+**Knowledge Tree** is a minimalist AI app that turns any topic into a *living concept map*.  
+Type “Complex Analysis,” and it instantly builds a **knowledge tree** showing:
+
+- **Roots** — what you must know first  
+- **Branches** — the main subtopics  
+- **Leaves** — atomic concepts (learnable in under 10 minutes)
+
+Click any node to expand it further, and the app recursively breaks the topic down into smaller ideas.  
+No accounts, no progress tracking — just a clear, expandable map of how knowledge fits together.
+
+> It’s like *Google Earth for learning*: zoom in anywhere and watch understanding unfold.
+
+---
+
+## 🚀 Overview
+
+### 🧩 Core Idea
+
+You input a topic → the app uses AI to generate a small JSON tree → you explore it interactively.  
+Each click fetches only the next layer of the map, so it stays fast and clean.
+
+### ⚙️ Architecture
+
+| Layer          | Tech                              | Purpose                                         |
+| -------------- | --------------------------------- | ----------------------------------------------- |
+| **Frontend**   | Next.js 14 + React-Force-Graph-2D | Renders the interactive knowledge tree          |
+| **Backend**    | Next.js API route + OpenAI API    | Generates prerequisites and subtopics on demand |
+| **State**      | Local React state (no DB)         | Keeps current nodes and edges in memory         |
+| **Deployment** | Vercel                            | Frontend + API in one lightweight package       |
+
+### 🧠 Data Flow
+
+```
+
+User Input → /api/expand → OpenAI → JSON → Graph Renderer → User Clicks Node → Repeat
+
+```
+
+---
+
+## 🛠️ Setup
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/yourname/knowledge-tree.git
+cd knowledge-tree
+npm install
+```
+
+### 2. Add your API key
+
+Create `.env.local`:
+
+```bash
+OPENAI_API_KEY=sk-your-key
+```
+
+### 3. Run locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧩 Example API Response
 
-## Learn More
+`POST /api/expand` with `{ "topic": "Complex Analysis" }`
 
-To learn more about Next.js, take a look at the following resources:
+```json
+{
+  "prerequisites": [
+    {
+      "title": "Differentiation",
+      "desc": "Finding instantaneous rates of change"
+    },
+    {
+      "title": "Complex Numbers",
+      "desc": "Numbers with real and imaginary parts"
+    }
+  ],
+  "subtopics": [
+    {
+      "title": "Cauchy–Riemann Equations",
+      "desc": "Conditions for analyticity"
+    },
+    {
+      "title": "Contour Integration",
+      "desc": "Integrating complex functions around paths"
+    }
+  ]
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Visual Design
 
-## Deploy on Vercel
+- **Colors:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - Roots — gray
+  - Topics — blue
+  - Subtopics — green
+  - Atomic leaves — gold
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Interactions:**
+
+  - Click node → expands new branches
+  - Hover → see title and short description
+  - Reset → clears map
+
+---
+
+## 🧭 Roadmap (Lean Build)
+
+| Level | Quest                               | Goal                        |  Time  |
+| :---- | :---------------------------------- | :-------------------------- | :----: |
+| **1** | Scaffold Next.js app                | Hello page visible          | < 1 hr |
+| **2** | Create `/api/expand` with mock data | Returns sample JSON         | < 1 hr |
+| **3** | Render interactive graph            | Nodes appear visually       | < 1 hr |
+| **4** | Add click-to-expand                 | Recursive node loading      | < 1 hr |
+| **5** | Connect OpenAI                      | Real AI-generated maps      | < 1 hr |
+| **6** | Polish UI & deploy                  | Color, reset, Vercel deploy | < 1 hr |
+
+---
+
+## 🧩 Example Use
+
+1. Type a topic like **"Quantum Mechanics"**.
+2. Explore its roots: Linear Algebra, Differential Equations, Complex Numbers.
+3. Click _“Schrödinger Equation”_ → expands into “Time-Independent Form,” “Normalization,” etc.
+4. Click again → reach atomic nodes you can learn in minutes.
+
+---
+
+## 🌌 Philosophy
+
+> **No content, just structure.**
+> The app doesn’t teach — it reveals _what to learn and in what order._
+
+Knowledge Tree is about **orientation**, not memorization.
+Once you have the map, you can use any resource to traverse it.
+
+---
+
+## 🧠 License
+
+MIT — free for personal and educational use.
+Just don’t turn it into a bloated LMS. Keep it curious.
+
+---
+
+## 🪴 Author
+
+Built by [Safi Ullah] —
+a believer that learning should feel like exploration, not instruction.
+
+```
+
+---
+
+```
