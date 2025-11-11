@@ -1,26 +1,36 @@
 // app/page.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import KnowledgeGraph from '@/components/KnowledgeGraph';
+import TopicInput from '@/components/TopicInput';
 import { useKnowledgeGraph } from '@/hooks/useKnowledgeGraph';
-import type { Node, Link } from '@/types';
+import type { Node } from '@/types';
 import type { NodeObject } from 'react-force-graph-2d';
 
 export default function Page() {
-  const { graphData, expand } = useKnowledgeGraph('Complex Analysis');
+  const [topic, setTopic] = useState('Complex Analysis');
+  const { graphData, expand, reset } = useKnowledgeGraph(topic);
 
+  // Expand current root when topic changes
   useEffect(() => {
-    // expand root once on mount
+    reset(topic);
     void expand({
-      id: 'Complex Analysis',
-      title: 'Complex Analysis',
+      id: topic,
+      title: topic,
       kind: 'root',
     } as unknown as NodeObject<Node>);
-  }, [expand]);
+  }, [topic, expand, reset]);
 
   return (
-    <main style={{ height: '100vh', background: '#0b0f17' }}>
+    <main
+      style={{
+        height: '100vh',
+        background: '#0b0f17',
+        position: 'relative',
+      }}
+    >
+      <TopicInput onSubmit={setTopic} />
       <KnowledgeGraph graphData={graphData} onNodeClick={expand} />
     </main>
   );

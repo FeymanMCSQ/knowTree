@@ -32,6 +32,13 @@ export function useKnowledgeGraph(initialRoot = 'Complex Analysis') {
 
   const graphData = useMemo(() => ({ nodes, links }), [nodes, links]);
 
+  // Reset the graph to a new root topic
+  const reset = useCallback((root: string) => {
+    setNodes([{ id: root, title: root, kind: 'root', fx: 0 }]);
+    setLinks([]);
+    expanded.current.clear();
+  }, []);
+
   const expand = useCallback(async (parent: NodeObject<Node>) => {
     const parentId = (parent.id as string) ?? parent.title;
     if (!parentId || !parent.title) return;
@@ -71,5 +78,5 @@ export function useKnowledgeGraph(initialRoot = 'Complex Analysis') {
     setLinks((prev) => appendLinksUniq(prev, newLinks));
   }, []);
 
-  return { graphData, expand, nodes, links, setNodes, setLinks };
+  return { graphData, expand, reset, nodes, links, setNodes, setLinks };
 }
