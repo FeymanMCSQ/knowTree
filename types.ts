@@ -24,3 +24,17 @@ export type ExpandResponse = {
   prerequisites: { title: string; desc: string }[];
   subtopics: { title: string; desc: string }[];
 };
+
+// Type guard: is this a Node (has an id)?
+export function isNodeRef(v: unknown): v is Node {
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    'id' in (v as Record<string, unknown>)
+  );
+}
+
+// Normalize a link endpoint (string | number | Node) → string | number
+export function toId(v: string | number | Node): string | number {
+  return isNodeRef(v) ? v.id : v;
+}
