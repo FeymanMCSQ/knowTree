@@ -1,15 +1,15 @@
 // app/page.tsx
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
 import KnowledgeGraph from '@/components/KnowledgeGraph';
 import TopicInput from '@/components/TopicInput';
 import { useKnowledgeGraph } from '@/hooks/useKnowledgeGraph';
 import type { Node } from '@/types';
 import type { NodeObject } from 'react-force-graph-2d';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function Page() {
-  const [topic, setTopic] = useState('Quantum Mechanics'); // example default
+  const [topic, setTopic] = useState('Quantum Mechanics');
   const { graphData, expand, reset } = useKnowledgeGraph(topic);
 
   // Rebuild when topic changes
@@ -22,21 +22,29 @@ export default function Page() {
     } as unknown as NodeObject<Node>);
   }, [topic, expand, reset]);
 
-  // Clicking a node: make it the new contextual root: "<title> (<current root>)"
+  // Click policy:
+  // - subtopic => "<title> (<current root>)"
+  // - prereq   => "<title>" (canonical, no context suffix)
+  // - root     => just expand
   const handleNodeClick = useCallback(
     (node: NodeObject<Node>) => {
       const clicked = node.title?.trim();
       if (!clicked) return;
 
-      // If you click the current root, just expand it normally
       if (clicked === topic) {
         void expand(node);
         return;
       }
 
-      const contextual = `${clicked} (${topic})`;
-      // Avoid useless resets if already on that contextual topic
-      if (contextual !== topic) setTopic(contextual);
+      if (node.kind === 'subtopic') {
+        const contextual = `${clicked} (${topic})`;
+        if (contextual !== topic) setTopic(contextual);
+      } else if (node.kind === 'prereq') {
+        if (clicked !== topic) setTopic(clicked);
+      } else {
+        // default: treat like root/topic
+        if (clicked !== topic) setTopic(clicked);
+      }
     },
     [topic, expand]
   );
