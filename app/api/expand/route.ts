@@ -55,11 +55,13 @@ export async function POST(req: Request) {
         {
           role: 'system',
           content: [
-            'You are a terse curriculum mapper.',
+            'You are a comprehensive curriculum mapper.',
             'Return ONLY JSON with two arrays: "prerequisites" and "subtopics".',
             'Each item: { "title": string, "desc": string }. No extra keys.',
             'Keep titles short (≤ 6 words). Keep desc ≤ 140 chars.',
             'Prefer foundational math prereqs; choose canonical subtopics.',
+            'Ensure an extremely comprehensive coverage of the prereqs and subtopics',
+            'Every possible topic must be covered',
             'Limit total items to ≤ 15 each (small is fine).',
           ].join(' '),
         },

@@ -1,3 +1,5 @@
+// components/KnowledgeGraph.tsx
+
 import dynamic from 'next/dynamic';
 import type { ForceGraphProps, NodeObject } from 'react-force-graph-2d';
 import type { Node, Link } from '@/types';
